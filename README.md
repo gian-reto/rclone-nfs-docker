@@ -1,27 +1,29 @@
 # rclone-nfs-docker
 
-This Docker image mounts an S3 bucket as a remote file system using NFS and [rclone](https://github.com/rclone/rclone).
+This Docker image mounts a remote file system using NFS and [rclone](https://github.com/rclone/rclone).
+
+Based on: https://github.com/nedix/s3-nfs-docker
 
 ## Usage
 
+- Install `fuse3` on the host machine.
+- Run `modprobe {nfs,nfsd}` on the host machine to load the necessary kernel modules.
+- Maybe uncomment `user_allow_other` in `/etc/fuse.conf` on the host machine (not sure if this is necessary).
+
 ### Standalone
 
-**Start the NFS server on port 2049**
+**Start the NFS server on port 1234**
 
 ```shell
-docker run --rm -it --cap-add SYS_ADMIN --device /dev/fuse -p 1234:2049 --name s3-nfs \
-    -e S3_NFS_ENDPOINT=foo \
-    -e S3_NFS_BUCKET=bar \
-    -e S3_NFS_ACCESS_KEY_ID=baz \
-    -e S3_NFS_SECRET_ACCESS_KEY=qux \
-    ghcr.io/nedix/s3-nfs-docker
+docker run --rm -it --cap-add SYS_ADMIN --device /dev/fuse -p 1234:2049 --name rclone-nfs \
+    ghcr.io/nedix/rclone-nfs-docker
 ```
 
 **Mount outside container**
 
 ```shell
-mkdir s3-nfs \
-&& mount -v -o vers=4 -o port=1234 127.0.0.1:/ ./s3-nfs
+mkdir rclone-nfs \
+&& mount -v -o vers=4 -o port=1234 127.0.0.1:/ ./rclone-nfs
 ```
 
 ### As a Docker Compose volume provisioner
@@ -30,30 +32,27 @@ mkdir s3-nfs \
 version: "3.8"
 
 services:
-  s3-nfs:
-    image: ghcr.io/nedix/s3-nfs-docker
+  rclone-nfs:
+    image: ghcr.io/nedix/rclone-nfs-docker
     cap_add:
       - SYS_ADMIN
     devices:
       - /dev/fuse:/dev/fuse:rwm
-    environment:
-      S3_NFS_ENDPOINT: foo
-      S3_NFS_BUCKET: bar
-      S3_NFS_ACCESS_KEY_ID: baz
-      S3_NFS_SECRET_ACCESS_KEY: qux
+    volumes:
+      - /path/to/rclone.conf:/etc/rclone/rclone.conf
     ports:
       - "1234:2049"
 
   your-service:
     image: foo
     depends_on:
-      s3-nfs:
+      rclone-nfs:
         condition: service_healthy
     volumes:
-      - "s3-nfs:/mnt/nfs"
+      - "rclone-nfs:/mnt/nfs"
 
 volumes:
-  s3-nfs:
+  rclone-nfs:
     driver_opts:
       type: "nfs"
       o: "vers=4,addr=127.0.0.1,port=1234,rw"
@@ -63,6 +62,5 @@ volumes:
 ## Development
 
 1. Clone this repo
-2. Copy the .env.example file to .env and configure
-3. Execute the `make setup` command
-4. Execute the `make up` command
+2. Execute the `make setup` command
+3. Execute the `make up` command

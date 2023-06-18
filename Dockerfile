@@ -6,14 +6,17 @@ FROM --platform=$BUILDPLATFORM alpine:3.18.2
 
 COPY --from=rclone /usr/local/bin/rclone /usr/bin/rclone
 
-RUN apk add \
-        fuse \
+RUN apk --no-cache add \
+        ca-certificates \
+        fuse3 \
+        tzdata \
         inotify-tools \
         nfs-utils \
         nfs-utils-doc \
         nfs-utils-openrc \
         openrc \
-        psmisc
+        psmisc && \
+        echo "user_allow_other" >> /etc/fuse.conf
 
 ADD rootfs /
 
@@ -23,10 +26,13 @@ RUN chmod +x \
         /etc/init.d/rclone \
         /etc/init.d/timestamp_updater
 
+RUN mkdir -p \
+        /etc/rclone
+
 ENTRYPOINT ["/entrypoint.sh"]
 
 EXPOSE 2049/tcp
 
-VOLUME /var/rclone
+VOLUME ["/etc/rclone"]
 
 HEALTHCHECK CMD mountpoint -q /mnt/rclone || exit 1

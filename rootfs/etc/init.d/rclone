@@ -10,20 +10,22 @@ depend() {
 start() {
     ebegin "Starting rclone"
 
-    . /etc/rclone/.env
-
     start-stop-daemon --start --background --pidfile "$PIDFILE" --make-pidfile --exec /usr/bin/rclone -- \
-         mount default:"$S3_NFS_BUCKET" /mnt/rclone \
-        --allow-other \
-        --cache-dir=/var/rclone \
+        mount remote: /mnt/rclone \
         --config=/etc/rclone/rclone.conf \
-        --transfers=8 \
-        --multi-thread-streams=8 \
-        --s3-upload-concurrency=2 \
-        --s3-chunk-size=32M \
+        --cache-dir=/var/rclone \
+        --allow-other \
+        --dir-cache-time=9999h \
+        --log-file=/etc/rclone/rclone.log \
+        --log-level=INFO \
+        --umask=000 \
         --vfs-cache-mode=full \
-        --vfs-cache-max-size=10G \
-        --vfs-cache-max-age=5m
+        --vfs-fast-fingerprint \
+        --vfs-cache-max-size=600G \
+        --vfs-cache-max-age=9999h \
+        --vfs-write-back=90m \
+        --tpslimit 12 \
+        --tpslimit-burst 0
 
     sleep 5
 
