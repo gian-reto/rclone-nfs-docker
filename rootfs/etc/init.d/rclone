@@ -21,7 +21,7 @@ start() {
         --umask=000 \
         --vfs-cache-mode=full \
         --vfs-fast-fingerprint \
-        --vfs-cache-max-size=600G \
+        --vfs-cache-max-size=400G \
         --vfs-cache-max-age=9999h \
         --vfs-write-back=90m \
         --tpslimit 12 \
