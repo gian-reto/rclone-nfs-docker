@@ -39,6 +39,8 @@ services:
       - /etc/passwd:/etc/passwd:ro
       - /etc/group:/etc/group:ro
       - /some/config/dir:/etc/rclone
+      - /some/mount/dir:/mnt/rclone #optional
+      - /some/cache/dir:/var/rclone #optional
     ports:
       - "2049:2049"
 ```
