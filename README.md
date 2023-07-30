@@ -9,10 +9,11 @@ Based on: https://github.com/nedix/s3-nfs-docker
 Keep in mind that the following commands have only been tested on Debian 11, and might need to be adapted for other distributions.
 
 - Install `fuse3` on the host machine.
-- Run `modprobe {nfs,nfsd}` on the host machine to load the necessary kernel modules.
+- Run `sudo modprobe {fuse,nfs,nfsd}` on the host machine to load the necessary kernel modules.
 - Make sure the kernel modules are loaded across reboots by running:
 
 ```sh
+echo fuse | sudo tee /etc/modules-load.d/fuse.conf && \
 echo nfs | sudo tee /etc/modules-load.d/nfs.conf && \
 echo nfsd | sudo tee /etc/modules-load.d/nfsd.conf
 ```
