@@ -24,7 +24,7 @@ start() {
         --vfs-fast-fingerprint \
         --vfs-cache-max-size=1500G \
         --vfs-cache-max-age=9999h \
-        --vfs-write-back=90m \
+        --vfs-write-back=45m \
         --tpslimit 12 \
         --tpslimit-burst 0
 
