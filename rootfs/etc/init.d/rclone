@@ -15,6 +15,7 @@ start() {
         --config=/etc/rclone/rclone.conf \
         --cache-dir=/var/rclone \
         --allow-other \
+        --allow-non-empty \
         --dir-cache-time=9999h \
         --log-file=/etc/rclone/rclone.log \
         --log-level=INFO \
