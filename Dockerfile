@@ -33,6 +33,6 @@ ENTRYPOINT ["/entrypoint.sh"]
 
 EXPOSE 2049/tcp
 
-VOLUME ["/etc/rclone"]
+VOLUME ["/etc/rclone", "/mnt/rclone"]
 
 HEALTHCHECK CMD mountpoint -q /mnt/rclone || exit 1
