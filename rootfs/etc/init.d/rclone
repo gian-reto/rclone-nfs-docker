@@ -22,11 +22,12 @@ start() {
         --umask=000 \
         --vfs-cache-mode=full \
         --vfs-fast-fingerprint \
-        --vfs-cache-max-size=1500G \
+        --vfs-cache-max-size=1280G \
         --vfs-cache-max-age=9999h \
         --vfs-write-back=45m \
-        --tpslimit 12 \
-        --tpslimit-burst 0
+        --default-time=2023-01-01 \
+        --tpslimit=12 \
+        --tpslimit-burst=0
 
     sleep 5
 
