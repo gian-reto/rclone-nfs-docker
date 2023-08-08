@@ -25,9 +25,9 @@ start() {
         --vfs-cache-max-size=1280G \
         --vfs-cache-max-age=9999h \
         --vfs-write-back=45m \
-        --default-time=2023-01-01 \
-        --tpslimit=12 \
-        --tpslimit-burst=0
+        --default-time 2023-01-01 \
+        --tpslimit 12 \
+        --tpslimit-burst 0
 
     sleep 5
 
