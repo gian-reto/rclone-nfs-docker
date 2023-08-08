@@ -29,7 +29,7 @@ start() {
         --tpslimit 12 \
         --tpslimit-burst 0
 
-    sleep 5
+    sleep 20
 
     exportfs -a
 
