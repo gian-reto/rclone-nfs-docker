@@ -1,8 +1,8 @@
-ARG RCLONE_VERSION=1.62.2
+ARG RCLONE_VERSION=1.65.0
 
 FROM rclone/rclone:$RCLONE_VERSION as rclone
 
-FROM --platform=$BUILDPLATFORM alpine:3.18.2
+FROM --platform=$BUILDPLATFORM alpine:3.19.0
 
 COPY --from=rclone /usr/local/bin/rclone /usr/bin/rclone
 
