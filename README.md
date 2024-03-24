@@ -1,5 +1,8 @@
 # rclone-nfs-docker
 
+> [!WARNING]
+> Note: This project will not be maintained further, as serving rclone mounts over NFS is now [officially supported](https://rclone.org/commands/rclone_serve_nfs) in rclone.
+
 This Docker image mounts a remote file system using NFS and [rclone](https://github.com/rclone/rclone).
 
 Based on: https://github.com/nedix/s3-nfs-docker
